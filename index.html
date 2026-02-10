@@ -411,5 +411,71 @@
     document.getElementById("btnLocalAdd").addEventListener("click", () => setLocal(getLocal() + 1));
     document.getElementById("btnLocalReset").addEventListener("click", () => setLocal(0));
   </script>
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // 🔥 Firebase config (SENİN PROJEN)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDUMMY", 
+    authDomain: "moon-hear-98f22.firebaseapp.com",
+    projectId: "moon-hear-98f22",
+    storageBucket: "moon-hear-98f22.firebasestorage.app",
+    messagingSenderId: "799171510727",
+    appId: "1:799171510727:web:2c89a21ce090cf1dd4d9e2"
+  };
+
+  // Init Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 🔢 Global counter reference
+  const counterRef = db.collection("global").doc("counters");
+
+  // 📥 Opt-in username list
+  async function optInUser(username){
+    if(!username) return;
+    await db.collection("optin").add({
+      username: username,
+      created_at: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }
+
+  // 🌍 Load global stream total
+  async function loadGlobalTotal(){
+    const snap = await counterRef.get();
+    if(snap.exists){
+      document.getElementById("globalCount").textContent =
+        snap.data().streams_total || 0;
+    }
+  }
+
+  // ➕ Auto-increment global counter
+  async function incrementGlobal(){
+    await counterRef.update({
+      streams_total: firebase.firestore.FieldValue.increment(1)
+    });
+    loadGlobalTotal();
+  }
+
+  // 🚀 On page load
+  document.addEventListener("DOMContentLoaded", () => {
+    loadGlobalTotal();
+
+    // When user checks stats → auto opt-in + increment
+    const statsBtn = document.getElementById("btnStats");
+    if(statsBtn){
+      statsBtn.addEventListener("click", async () => {
+        const user = document.getElementById("lfmUser").value.trim();
+        if(user){
+          await optInUser(user);
+          await incrementGlobal();
+        }
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
