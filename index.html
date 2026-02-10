@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MOON HEAR — Stream Jin</title>
-  <meta name="description" content="MOON HEAR is a quiet space to stream Jin’s official discography, view personal Last.fm listening stats, and stay motivated." />
+  <meta name="description" content="MOON HEAR is a calm space to stream Jin’s official discography and view personal Last.fm listening stats." />
 
   <style>
     :root{
@@ -19,6 +19,7 @@
       --r:18px;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -30,27 +31,39 @@
     }
     a{color:inherit}
     .wrap{max-width:1100px; margin:0 auto; padding:22px 18px 70px;}
+
+    /* Header: no sticky (avoids overlay bugs), still looks premium */
     header{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
-      position:sticky; top:0; backdrop-filter: blur(10px);
       background: rgba(11,11,16,.55);
-      border-bottom:1px solid rgba(36,36,51,.6);
-      padding:14px 18px; margin:0 -18px 18px;
+      border:1px solid rgba(36,36,51,.6);
+      border-radius: 16px;
+      padding:14px 16px;
+      margin-bottom:18px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
     }
     .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.4px}
     .dot{width:10px; height:10px; border-radius:999px; background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 0 0 6px rgba(203,183,255,.08)}
     .nav{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
     .pill{
-      padding:9px 12px; border:1px solid rgba(36,36,51,.8);
-      border-radius:999px; background:rgba(17,17,26,.55);
-      font-size:14px; color:var(--muted); text-decoration:none;
+      padding:9px 12px;
+      border:1px solid rgba(36,36,51,.8);
+      border-radius:999px;
+      background:rgba(17,17,26,.55);
+      font-size:14px;
+      color:var(--muted);
+      text-decoration:none;
+      user-select:none;
     }
     .pill:hover{border-color:rgba(203,183,255,.5); color:var(--text)}
+
     .hero{
       display:grid; grid-template-columns: 1.3fr .7fr; gap:16px; align-items:stretch;
       margin-top:10px;
     }
-    @media (max-width: 860px){ .hero{grid-template-columns:1fr} header{position:relative} }
+    @media (max-width: 860px){ .hero{grid-template-columns:1fr} }
+
     .card{
       background:linear-gradient(180deg, rgba(17,17,26,.75), rgba(17,17,26,.55));
       border:1px solid rgba(36,36,51,.8);
@@ -58,14 +71,20 @@
       box-shadow:var(--shadow);
       padding:18px;
     }
+
     h1{margin:0 0 8px; font-size:44px; line-height:1.05}
     .sub{color:var(--muted); font-size:16px; line-height:1.6; max-width:62ch}
     .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:11px 14px; border-radius:12px; border:1px solid rgba(36,36,51,.9);
+      padding:11px 14px;
+      border-radius:12px;
+      border:1px solid rgba(36,36,51,.9);
       background:rgba(255,255,255,.02);
-      text-decoration:none; font-weight:600; color:var(--text);
+      text-decoration:none;
+      font-weight:600;
+      color:var(--text);
       cursor:pointer;
     }
     .btn:hover{border-color:rgba(203,183,255,.55)}
@@ -74,23 +93,36 @@
       border-color:rgba(203,183,255,.55);
     }
     .small{font-size:13px; color:var(--muted)}
-    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:16px;}
-    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
     .kpi{display:flex; flex-direction:column; gap:6px}
     .kpi b{font-size:22px}
     .kpi span{color:var(--muted); font-size:13px}
+
     .section{margin-top:16px}
     .section h2{margin:0 0 8px; font-size:18px; letter-spacing:.2px}
     .hr{height:1px; background:rgba(36,36,51,.8); margin:16px 0}
+
+    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:16px;}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+
     .row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
     @media (max-width: 700px){ .row{grid-template-columns:1fr} }
+
+    label{display:block; margin-bottom:6px}
     input{
-      width:100%; padding:11px 12px; border-radius:12px;
-      border:1px solid rgba(36,36,51,.9); background:rgba(0,0,0,.2); color:var(--text);
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid rgba(36,36,51,.9);
+      background:rgba(0,0,0,.2);
+      color:var(--text);
       outline:none;
     }
     input:focus{border-color:rgba(203,183,255,.55)}
     ul{margin:10px 0 0; padding-left:18px}
+
+    .ok{color: #bfe8c5}
+    .warn{color: #ffd6a6}
+
     footer{margin-top:22px; color:var(--muted); font-size:12px; line-height:1.6}
   </style>
 </head>
@@ -115,13 +147,11 @@
           MOON HEAR is a calm, no-pressure space for streaming Jin’s official discography and viewing your personal listening stats via Last.fm.
           If you can stream today, that’s enough.
         </p>
-
         <div class="cta">
           <a class="btn primary" href="#discography">Start streaming</a>
           <a class="btn" href="#stats">Connect Last.fm</a>
           <a class="btn" href="#counter">I streamed today</a>
         </div>
-
         <p class="small" style="margin-top:12px">
           Want this page in your language? Use your browser’s translate feature.
         </p>
@@ -145,7 +175,6 @@
     <section id="discography" class="section card">
       <h2>Discography</h2>
       <p class="small">We’ll fill this with official links (Spotify / YouTube / Apple Music). Keeping it clean and easy.</p>
-
       <div class="grid">
         <div class="card" style="box-shadow:none">
           <b>Album / Single</b><br><span class="small">Official listen buttons</span>
@@ -168,17 +197,17 @@
       <div class="row" style="margin-top:10px">
         <div>
           <label class="small" for="lfmUser">Last.fm username</label>
-          <input id="lfmUser" placeholder="e.g., moonhear_user" />
+          <input id="lfmUser" autocomplete="off" spellcheck="false" placeholder="e.g., moonhear_user" />
         </div>
         <div>
           <label class="small" for="statsfmUrl">Stats.fm profile link (optional)</label>
-          <input id="statsfmUrl" placeholder="paste your Stats.fm profile URL" />
+          <input id="statsfmUrl" autocomplete="off" spellcheck="false" placeholder="paste your Stats.fm profile URL" />
         </div>
       </div>
 
       <div class="cta" style="margin-top:12px">
-        <button class="btn primary" type="button" onclick="showJinStats()">Show my Jin stats</button>
-        <button class="btn" type="button" onclick="openStatsFm()">Open Stats.fm profile</button>
+        <button class="btn primary" type="button" id="btnStats">Show my Jin stats</button>
+        <button class="btn" type="button" id="btnStatsFm">Open Stats.fm profile</button>
       </div>
 
       <div class="row" style="margin-top:12px">
@@ -206,8 +235,8 @@
         </div>
       </div>
 
-      <p class="small" style="margin-top:10px">
-        Note: Stats.fm doesn’t provide an open API for external sites. We link to your profile instead.
+      <p class="small warn" id="statsNote" style="margin-top:10px">
+        Note: If you see 0, your Last.fm may store the artist name differently (e.g., JIN / Jin (BTS)). We can adjust one line.
       </p>
     </section>
 
@@ -233,8 +262,8 @@
       </div>
 
       <div class="cta" style="margin-top:12px">
-        <button class="btn primary" type="button" onclick="addLocal()">I streamed today</button>
-        <button class="btn" type="button" onclick="resetLocal()">Reset (only you)</button>
+        <button class="btn primary" type="button" id="btnLocalAdd">I streamed today</button>
+        <button class="btn" type="button" id="btnLocalReset">Reset (only you)</button>
       </div>
     </section>
 
@@ -279,29 +308,27 @@
   </div>
 
   <script>
-    // ===== Local-only counter (works immediately) =====
+    // ===== Config =====
+    const LASTFM_API_KEY = "4ae50120922de69f204dcb69ac15180f";
+    const TARGET_ARTIST = "Jin"; // change to "JIN" or "Jin (BTS)" if needed
+
+    // ===== Local counter =====
     const LOCAL_KEY = "moonhear_local_count_v1";
     function getLocal(){ return parseInt(localStorage.getItem(LOCAL_KEY) || "0", 10); }
     function setLocal(n){
       localStorage.setItem(LOCAL_KEY, String(n));
-      const el = document.getElementById("localCount");
-      if(el) el.textContent = String(n);
+      document.getElementById("localCount").textContent = String(n);
     }
-    function addLocal(){ setLocal(getLocal() + 1); }
-    function resetLocal(){ setLocal(0); }
     setLocal(getLocal());
 
+    // ===== Stats.fm link =====
     function openStatsFm(){
       const url = document.getElementById("statsfmUrl").value.trim();
       if(!url){ alert("Paste your Stats.fm profile URL first."); return; }
       window.open(url, "_blank", "noopener,noreferrer");
     }
 
-    // ===== Last.fm (JSONP so it works on GitHub Pages) =====
-    const LASTFM_API_KEY = "4ae50120922de69f204dcb69ac15180f";
-    // If your Last.fm shows the artist differently (e.g., "JIN" or "Jin (BTS)"), we’ll change this one line.
-    const TARGET_ARTIST = "Jin";
-
+    // ===== Last.fm JSONP (works on GitHub Pages) =====
     function jsonp(url){
       return new Promise((resolve, reject) => {
         const cb = "mh_cb_" + Math.random().toString(36).slice(2);
@@ -344,14 +371,12 @@
       const user = document.getElementById("lfmUser").value.trim();
       if(!user){ alert("Please enter your Last.fm username."); return; }
 
-      // Loading
       document.getElementById("jin7").textContent = "Loading…";
       document.getElementById("jin30").textContent = "Loading…";
       document.getElementById("topJinTrack").textContent = "Loading…";
       document.getElementById("topJinTrackPlays").textContent = "";
 
       try{
-        // 7 days
         const topArtists7 = await jsonp(lfmUrl("user.gettopartists", { user, period:"7day", limit:"200" }));
         const topTracks7  = await jsonp(lfmUrl("user.gettoptracks",  { user, period:"7day", limit:"200" }));
 
@@ -366,7 +391,6 @@
           document.getElementById("topJinTrack").textContent = "No Jin track found (7 days)";
         }
 
-        // 30 days (Last.fm uses "1month")
         const topArtists30 = await jsonp(lfmUrl("user.gettopartists", { user, period:"1month", limit:"200" }));
         const jin30 = findArtistPlaycount(topArtists30, TARGET_ARTIST);
         document.getElementById("jin30").textContent = String(jin30);
@@ -380,7 +404,12 @@
         document.getElementById("topJinTrackPlays").textContent = "";
       }
     }
+
+    // ===== Wire buttons (no inline onclick = fewer mistakes) =====
+    document.getElementById("btnStats").addEventListener("click", showJinStats);
+    document.getElementById("btnStatsFm").addEventListener("click", openStatsFm);
+    document.getElementById("btnLocalAdd").addEventListener("click", () => setLocal(getLocal() + 1));
+    document.getElementById("btnLocalReset").addEventListener("click", () => setLocal(0));
   </script>
 </body>
 </html>
-
